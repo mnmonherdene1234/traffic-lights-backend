@@ -10,7 +10,7 @@ import routes from "./src/routes";
 import { getEndpoints } from "express-routes";
 import rateLimit, { MemoryStore } from "express-rate-limit";
 import helmet from "helmet";
-
+import cors from "cors";
 
 dotenv.config();
 
@@ -25,6 +25,11 @@ app.use(
   })
 );
 app.use(cookieParser());
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 
 console.time("database");
 mongoose.connect(process.env.MONGODB as string, {}, () => {
