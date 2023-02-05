@@ -1,6 +1,9 @@
 import { IUser, User } from "../models/user.model";
+import bcrypt from "bcrypt";
 
 async function create(user: IUser) {
+  const salt: string = await bcrypt.genSalt();
+  user.password = await bcrypt.hash(user.password, salt);
   return await new User(user).save();
 }
 

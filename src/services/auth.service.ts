@@ -1,19 +1,23 @@
 import { User } from "../models/user.model";
 import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
 
 interface ILogin {
   username: string;
   password: string;
 }
 
-async function login(ilogin: ILogin) {
+async function login(ilogin: ILogin): Promise<string | null> {
   const user = await User.findOne({
     username: ilogin.username,
-    password: ilogin.password,
   });
 
   if (!user) {
-    return "";
+    return null;
+  }
+
+  if (!(await bcrypt.compare(ilogin.password, user.password))) {
+    return null;
   }
 
   return jwt.sign({ id: user?.id }, process.env.TOKEN_SECRET as string, {
@@ -28,5 +32,5 @@ async function profile(id: string) {
 
 export default {
   login,
-  profile
+  profile,
 };

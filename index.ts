@@ -1,21 +1,20 @@
-import express, { Express, Request, Response } from "express";
+import express, { Express } from "express";
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import { errorMiddleware } from "./src/middlewares/error.middleware";
 import mongoose from "mongoose";
-import usersRoute from "./src/routes/users.route";
-import authRoute from "./src/routes/auth.route";
 import morgan from "morgan";
+import routes from "./src/routes";
 // @ts-ignore
 import { getEndpoints } from "express-routes";
 import rateLimit, { MemoryStore } from "express-rate-limit";
 import helmet from "helmet";
 
-console.time("start");
 
 dotenv.config();
 
+console.time("start");
 const app: Express = express();
 const port = process.env.PORT || 8080;
 
@@ -35,16 +34,7 @@ mongoose.connect(process.env.MONGODB as string, {}, () => {
 
 app.use(morgan("dev"));
 
-app.get("/", (req: Request, res: Response) => {
-  res.send("Hello World");
-});
-app.use("/v1/api/users", usersRoute);
-app.use("/v1/api/auth", authRoute);
-app.all("*", (req: Request, res: Response) => {
-  res.status(404).json({
-    message: "NOT_FOUND",
-  });
-});
+app.use("/v1/api", routes);
 
 app.use(errorMiddleware);
 
