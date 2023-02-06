@@ -5,11 +5,8 @@ async function login(req: Request, res: Response) {
   const token = await authService.login(req.body);
 
   if (token) {
-    res.cookie("token", token, {
-      httpOnly: true,
-    });
     res.json({
-      message: "OK",
+      token: token,
     });
   } else {
     res.status(401).json({
