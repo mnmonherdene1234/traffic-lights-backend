@@ -4,13 +4,19 @@ import { ILight, Light } from "../models/light.model";
 import { Road } from "../models/road.model";
 
 async function create(light: ILight) {
-  const road = await Road.exists(light.road);
+  const road = await Road.findById(light.road);
 
   if (!road) {
     throw new Error("ROAD_NOT_FOUND");
   }
 
-  return (await new Light(light).save()) as unknown as ILight;
+  const savedLight = await new Light(light).save();
+
+  if (savedLight) {
+    await Road.findByIdAndUpdate(road.id, { $push: { lights: savedLight.id } });
+  }
+
+  return savedLight as unknown as ILight;
 }
 
 async function findAll(findAllDto: FindAllDto) {
@@ -26,7 +32,15 @@ async function update(id: string, light: ILight) {
 }
 
 async function remove(id: string) {
-  return (await Light.findByIdAndDelete(id)) as ILight;
+  const deletedLight = (await Light.findByIdAndDelete(id)) as ILight;
+
+  if (deletedLight) {
+    await Road.findByIdAndUpdate(deletedLight.road, {
+      $pull: { lights: deletedLight.id },
+    });
+  }
+
+  return deletedLight as unknown as ILight;
 }
 
 export default {

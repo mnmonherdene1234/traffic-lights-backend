@@ -19,15 +19,27 @@ async function findAll(req: Request, res: Response, next: NextFunction) {
 }
 
 async function findOne(req: Request, res: Response, next: NextFunction) {
-  res.json(await usersService.findOne(await requestToFindOneDto(req)));
+  try {
+    res.json(await usersService.findOne(await requestToFindOneDto(req)));
+  } catch (error) {
+    next(error);
+  }
 }
 
 async function update(req: Request, res: Response, next: NextFunction) {
-  res.json(await usersService.update(req.params.id, req.body));
+  try {
+    res.json(await usersService.update(req.params.id, req.body));
+  } catch (error) {
+    next(error);
+  }
 }
 
 async function remove(req: Request, res: Response, next: NextFunction) {
-  res.json(await usersService.remove(req.params.id));
+  try {
+    res.json(await usersService.remove(req.params.id));
+  } catch (error) {
+    next(error);
+  }
 }
 
 export default {
