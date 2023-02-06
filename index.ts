@@ -1,7 +1,6 @@
 import express, { Express } from "express";
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
-import cookieParser from "cookie-parser";
 import { errorMiddleware } from "./src/middlewares/error.middleware";
 import mongoose from "mongoose";
 import morgan from "morgan";
@@ -18,32 +17,12 @@ console.time("start");
 const app: Express = express();
 const port = process.env.PORT || 8080;
 
-app.use(bodyParser.json());
-app.use(
-  bodyParser.urlencoded({
-    extended: true,
-  })
-);
-app.use(cookieParser());
-app.use(
-  cors({
-    origin: "*",
-  })
-);
-
 console.time("database");
 mongoose.connect(process.env.MONGODB as string, {}, () => {
   console.log(`\x1b[32mconnected to database`);
   console.timeEnd("database");
 });
 
-app.use(morgan("dev"));
-
-app.use("/v1/api", routes);
-
-app.use(errorMiddleware);
-
-app.use(helmet());
 const apiLimiter = rateLimit({
   windowMs: 60 * 1000, // 1 minutes
   max: 100, // Limit each IP to 100 requests per `window` (here, per 1 minutes)
@@ -51,7 +30,22 @@ const apiLimiter = rateLimit({
   store: new MemoryStore(),
 });
 
+app.use(bodyParser.json());
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+  })
+);
+app.use(
+  cors({
+    origin: "*",
+  })
+);
+app.use(morgan("dev"));
+app.use(helmet());
 app.use(apiLimiter);
+app.use("/v1/api", routes);
+app.use(errorMiddleware);
 
 app.listen(port, () => {
   console.log(
