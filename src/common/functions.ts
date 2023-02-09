@@ -5,17 +5,26 @@ import { FindAllDto, FindOneDto } from "./dto";
 export async function findAllFunc<T>(
   model: Model<any>,
   findAllDto: FindAllDto
-) {
+): Promise<{ data: T[]; meta: FindAllDto }> {
+  if (findAllDto.page < 1) {
+    findAllDto.page = 1;
+  }
+
+  if (findAllDto.pageSize < 1) {
+    findAllDto.pageSize = 1;
+  }
+
   const { filter, page, pageSize, populate, select, sort } = findAllDto;
+
   const data = (await model
     .find(filter)
     .skip((page - 1) * pageSize)
     .limit(pageSize)
     .populate(populate)
     .select(select)
-    .sort(sort)) as unknown as T[];
+    .sort(sort)) as T[];
 
-  findAllDto.total = await model.count(filter);
+  findAllDto.total = await model.countDocuments(filter);
 
   return { data, meta: findAllDto };
 }
@@ -31,22 +40,63 @@ export async function findOneFunc<T>(
     .select(select)) as unknown as T;
 }
 
-export async function requestToFindAllDto(req: Request): Promise<FindAllDto> {
+export function requestToFindAllDto(req: Request): FindAllDto {
+  let filter: object = {};
+  let page = 1;
+  let pageSize = 20;
+  let populate = "";
+  let select = "";
+  let sort = "";
+
+  if (req.query.filter) {
+    try {
+      filter = JSON.parse(req.query.filter.toString());
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  if (req.query.page) {
+    const parsedPage = parseInt(req.query.page.toString());
+    if (!isNaN(parsedPage)) {
+      page = parsedPage > 0 ? parsedPage : 1;
+    }
+  }
+
+  if (req.query.pageSize) {
+    const parsedPageSize = parseInt(req.query.pageSize.toString());
+    if (!isNaN(parsedPageSize)) {
+      pageSize = parsedPageSize > 0 ? parsedPageSize : 20;
+    }
+  }
+
+  if (req.query.populate) {
+    populate = req.query.populate.toString();
+  }
+
+  if (req.query.select) {
+    select = req.query.select.toString();
+  }
+
+  if (req.query.sort) {
+    sort = req.query.sort.toString();
+  }
+
   return {
-    filter: req.query.filter || {},
-    page: (req.query.page as unknown as number) || 1,
-    pageSize: (req.query.pageSize as unknown as number) || 20,
-    populate: (req.query.populate as unknown as string) || "",
-    select: (req.query.select as unknown as string) || "",
-    sort: (req.query.sort as unknown as string) || "",
+    filter,
+    page,
+    pageSize,
+    populate,
+    select,
+    sort,
     total: 0,
   };
 }
 
-export async function requestToFindOneDto(req: Request): Promise<FindOneDto> {
-  return {
-    id: req.params?.id,
-    populate: (req.query?.populate as unknown as string) || "",
-    select: (req.query?.select as unknown as string) || "",
-  };
+export function requestToFindOneDto(req: Request): FindOneDto {
+  const id = req.params?.id;
+  const populate: string = req.query?.populate?.toString() || "";
+  const select: string = req.query?.select?.toString() || "";
+
+  return { id, populate, select };
 }
