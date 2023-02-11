@@ -2,9 +2,9 @@ import { NextFunction, Request, Response } from "express";
 
 export const errorMiddleware = (
   err: any,
-  req: Request,
+  _req: Request,
   res: Response,
-  next: NextFunction
+  _next: NextFunction
 ) => {
   console.error(err);
 
@@ -14,7 +14,7 @@ export const errorMiddleware = (
     success: false,
     status: errStatus,
     message: errMsg,
-    stack: process.env.NODE_ENV === "development" ? err.stack : {},
+    stack: process.env.NODE_ENV !== "production" ? err.stack : {},
   });
 
   return;

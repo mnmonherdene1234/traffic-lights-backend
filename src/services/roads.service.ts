@@ -1,5 +1,5 @@
-import { FindAllDto, FindOneDto } from "../common/dto";
-import { findAllFunc, findOneFunc } from "../common/functions";
+import { getAllDto, getAllResultDto, getOneDto } from "../common/dto";
+import { getAll, getOne } from "../common/functions";
 import { Light } from "../models/light.model";
 import { IRoad, Road } from "../models/road.model";
 
@@ -7,16 +7,22 @@ async function create(road: IRoad): Promise<IRoad> {
   return (await new Road(road).save()) as unknown as IRoad;
 }
 
-async function findAll(findAllDto: FindAllDto): Promise<IRoad[]> {
-  return (await findAllFunc<IRoad>(Road, findAllDto)) as unknown as IRoad[];
+async function findAll(
+  findAllDto: getAllDto
+): Promise<getAllResultDto<IRoad>> {
+  return await getAll<IRoad>(Road, findAllDto);
 }
 
-async function findOne(findOneDto: FindOneDto): Promise<IRoad | null> {
-  return await findOneFunc<IRoad>(Road, findOneDto);
+async function findOne(findOneDto: getOneDto): Promise<IRoad | null> {
+  return await getOne<IRoad>(Road, findOneDto);
 }
 
 async function update(id: string, road: IRoad): Promise<IRoad | null> {
-  return (await Road.findByIdAndUpdate(id, road, { new: true })) as IRoad;
+  return (await Road.findByIdAndUpdate(
+    id,
+    { $set: { ...road } },
+    { new: true }
+  )) as IRoad;
 }
 
 async function remove(id: string): Promise<IRoad | null> {

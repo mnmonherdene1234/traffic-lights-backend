@@ -1,23 +1,19 @@
-import { User } from "../models/user.model";
+import { IUser, User } from "../models/user.model";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import { LoginDto } from "../common/dto";
+import { UNAUTHORIZED } from "../errors";
 
-interface ILogin {
-  username: string;
-  password: string;
-}
-
-async function login(ilogin: ILogin): Promise<string | null> {
+async function login(loginDto: LoginDto): Promise<string | null> {
   const user = await User.findOne({
-    username: ilogin.username,
+    username: loginDto.username,
   });
 
-  if (!user) {
-    return null;
-  }
-
-  if (!(await bcrypt.compare(ilogin.password, user.password))) {
-    return null;
+  if (
+    !user ||
+    !(await bcrypt.compare(loginDto.password ?? "", user.password))
+  ) {
+    throw UNAUTHORIZED;
   }
 
   return jwt.sign({ id: user?.id }, process.env.TOKEN_SECRET as string, {
@@ -25,9 +21,8 @@ async function login(ilogin: ILogin): Promise<string | null> {
   });
 }
 
-async function profile(id: string) {
-  const user = await User.findById(id);
-  return user;
+async function profile(id: string): Promise<IUser | null> {
+  return (await User.findById(id)) as unknown as IUser;
 }
 
 export default {

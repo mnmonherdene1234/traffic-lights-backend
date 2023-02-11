@@ -1,29 +1,29 @@
 import { NextFunction, Request, Response } from "express";
-import { requestToFindAllDto, requestToFindOneDto } from "../common/functions";
+import {
+  handleRequest,
+  requestToGetAllDto,
+  requestToGetOneDto,
+} from "../common/functions";
 import lampService from "../services/lamps.service";
 
 async function create(req: Request, res: Response, next: NextFunction) {
-  try {
-    res.json(await lampService.create(req.body));
-  } catch (error) {
-    next(error);
-  }
+  handleRequest(async () => await lampService.create(req.body), res, next);
 }
 
 async function findAll(req: Request, res: Response, next: NextFunction) {
-  try {
-    res.json(await lampService.findAll(requestToFindAllDto(req)));
-  } catch (error) {
-    next(error);
-  }
+  handleRequest(
+    async () => await lampService.findAll(requestToGetAllDto(req)),
+    res,
+    next
+  );
 }
 
 async function findOne(req: Request, res: Response, next: NextFunction) {
-  try {
-    res.json(await lampService.findOne(requestToFindOneDto(req)));
-  } catch (error) {
-    next(error);
-  }
+  handleRequest(
+    async () => await lampService.findOne(requestToGetOneDto(req)),
+    res,
+    next
+  );
 }
 
 async function update(req: Request, res: Response, next: NextFunction) {

@@ -1,25 +1,32 @@
-import { FindAllDto, FindOneDto } from "../common/dto";
-import { findAllFunc, findOneFunc } from "../common/functions";
+import { getAllDto, getOneDto } from "../common/dto";
+import { getAll, getOne } from "../common/functions";
 import { ILamp, Lamp } from "../models/lamp.model";
 
-async function create(lamp: ILamp) {
-  return await new Lamp(lamp).save();
+async function create(lamp: ILamp): Promise<ILamp> {
+  return (await Lamp.create(lamp)) as ILamp;
 }
 
-async function findAll(findAllDto: FindAllDto) {
-  return await findAllFunc(Lamp, findAllDto);
+async function findAll(getAllDto: getAllDto): Promise<{
+  data: unknown[];
+  meta: getAllDto;
+}> {
+  return await getAll(Lamp, getAllDto);
 }
 
-async function findOne(findOneDto: FindOneDto) {
-  return await findOneFunc(Lamp, findOneDto);
+async function findOne(getOneDto: getOneDto): Promise<ILamp | null> {
+  return await getOne(Lamp, getOneDto);
 }
 
-async function update(id: string, lamp: ILamp) {
-  return await Lamp.findByIdAndUpdate(id, { $set: { ...lamp } });
+async function update(id: string, lamp: ILamp): Promise<ILamp | null> {
+  return (await Lamp.findByIdAndUpdate(
+    id,
+    { $set: { ...lamp } },
+    { new: true }
+  )) as ILamp;
 }
 
-async function remove(id: string) {
-  return await Lamp.findByIdAndDelete(id);
+async function remove(id: string): Promise<ILamp | null> {
+  return (await Lamp.findByIdAndDelete(id)) as ILamp;
 }
 
 export default {

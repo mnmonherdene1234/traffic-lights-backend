@@ -1,11 +1,11 @@
-import { Request } from "express";
+import { NextFunction, Request, Response } from "express";
 import { Model } from "mongoose";
-import { FindAllDto, FindOneDto } from "./dto";
+import { getAllDto, getAllResultDto, getOneDto, ValidationDto } from "./dto";
 
-export async function findAllFunc<T>(
+export async function getAll<T>(
   model: Model<any>,
-  findAllDto: FindAllDto
-): Promise<{ data: T[]; meta: FindAllDto }> {
+  findAllDto: getAllDto
+): Promise<getAllResultDto<T>> {
   if (findAllDto.page < 1) {
     findAllDto.page = 1;
   }
@@ -29,10 +29,10 @@ export async function findAllFunc<T>(
   return { data, meta: findAllDto };
 }
 
-export async function findOneFunc<T>(
+export async function getOne<T>(
   model: Model<any>,
-  findOneDto: FindOneDto
-) {
+  findOneDto: getOneDto
+): Promise<T | null> {
   const { id, populate, select } = findOneDto;
   return (await model
     .findById(id)
@@ -40,7 +40,7 @@ export async function findOneFunc<T>(
     .select(select)) as unknown as T;
 }
 
-export function requestToFindAllDto(req: Request): FindAllDto {
+export function requestToGetAllDto(req: Request): getAllDto {
   let filter: object = {};
   let page = 1;
   let pageSize = 20;
@@ -93,10 +93,34 @@ export function requestToFindAllDto(req: Request): FindAllDto {
   };
 }
 
-export function requestToFindOneDto(req: Request): FindOneDto {
+export function requestToGetOneDto(req: Request): getOneDto {
   const id = req.params?.id;
   const populate: string = req.query?.populate?.toString() || "";
   const select: string = req.query?.select?.toString() || "";
 
   return { id, populate, select };
+}
+
+export async function handleRequest<T>(
+  fn: () => Promise<T>,
+  res: Response,
+  next: NextFunction,
+  validationDto?: ValidationDto
+): Promise<void> {
+  try {
+    if (validationDto) {
+      try {
+        await validationDto.validateAsync();
+      } catch (error: any) {
+        error.statusCode = 400;
+        next(error);
+        return;
+      }
+    }
+
+    const result = await fn();
+    res.json(result);
+  } catch (error) {
+    next(error);
+  }
 }

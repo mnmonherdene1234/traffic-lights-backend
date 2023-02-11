@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { requestToFindAllDto, requestToFindOneDto } from "../common/functions";
+import { requestToGetAllDto, requestToGetOneDto } from "../common/functions";
 import roadsService from "../services/roads.service";
 
 async function create(req: Request, res: Response, next: NextFunction) {
@@ -12,7 +12,7 @@ async function create(req: Request, res: Response, next: NextFunction) {
 
 async function findAll(req: Request, res: Response, next: NextFunction) {
   try {
-    res.json(await roadsService.findAll(await requestToFindAllDto(req)));
+    res.json(await roadsService.findAll(await requestToGetAllDto(req)));
   } catch (error) {
     next(error);
   }
@@ -20,7 +20,7 @@ async function findAll(req: Request, res: Response, next: NextFunction) {
 
 async function findOne(req: Request, res: Response, next: NextFunction) {
   try {
-    res.json(await roadsService.findOne(await requestToFindOneDto(req)));
+    res.json(await roadsService.findOne(await requestToGetOneDto(req)));
   } catch (error) {
     next(error);
   }
