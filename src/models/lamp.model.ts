@@ -8,6 +8,8 @@ export interface ILamp {
   image: string;
 }
 
+export const LAMP_NAME: string = "lamps";
+
 const lampSchema = new mongoose.Schema(
   {
     name: {
@@ -25,4 +27,4 @@ const lampSchema = new mongoose.Schema(
   }
 );
 
-export const Lamp = mongoose.model("lamps", lampSchema);
+export const Lamp = mongoose.model(LAMP_NAME, lampSchema);

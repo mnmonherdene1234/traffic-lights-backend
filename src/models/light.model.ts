@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { IRoad } from "./road.model";
+import { IRoad, ROADS_NAME } from "./road.model";
 import timestamps from "./utils/timestamps";
 import toJSON from "./utils/toJSON";
 
@@ -11,6 +11,8 @@ export interface ILight {
   updated_at: Date;
 }
 
+export const LIGHTS_NAME: string = "lights";
+
 const lightSchema = new mongoose.Schema(
   {
     name: {
@@ -20,7 +22,7 @@ const lightSchema = new mongoose.Schema(
     },
     road: {
       type: mongoose.Types.ObjectId,
-      ref: "roads",
+      ref: ROADS_NAME,
       required: true,
     },
   },
@@ -30,4 +32,4 @@ const lightSchema = new mongoose.Schema(
   }
 );
 
-export const Light = mongoose.model("lights", lightSchema);
+export const Light = mongoose.model(LIGHTS_NAME, lightSchema);

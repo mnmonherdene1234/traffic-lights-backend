@@ -10,6 +10,8 @@ export interface IUser {
   updated_at: Date;
 }
 
+export const USERS_NAME: string = "users";
+
 const userSchema = new mongoose.Schema(
   {
     username: {
@@ -33,7 +35,7 @@ const userSchema = new mongoose.Schema(
     toJSON: {
       virtuals: true,
       versionKey: false,
-      transform(doc, ret, options) {
+      transform(_doc, ret, _options) {
         ret.id = ret._id;
         delete ret._id;
         delete ret.password;
@@ -44,4 +46,4 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-export const User = mongoose.model("users", userSchema);
+export const User = mongoose.model(USERS_NAME, userSchema);
