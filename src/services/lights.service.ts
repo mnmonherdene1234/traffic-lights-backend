@@ -1,5 +1,6 @@
 import { getAllDto, getAllResultDto, getOneDto } from "../common/dto";
 import { getAll, getOne } from "../common/functions";
+import { ROAD_NOT_FOUND } from "../errors";
 import { ILight, Light } from "../models/light.model";
 import { Road } from "../models/road.model";
 
@@ -7,7 +8,7 @@ async function create(light: ILight): Promise<ILight> {
   const road = await Road.findById(light.road);
 
   if (!road) {
-    throw new Error("ROAD_NOT_FOUND");
+    throw ROAD_NOT_FOUND;
   }
 
   const createdLight = (await Light.create(light)) as unknown as ILight;

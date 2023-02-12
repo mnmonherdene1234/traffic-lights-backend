@@ -1,10 +1,10 @@
 import express, { Express } from "express";
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
-import { errorMiddleware } from "./src/middlewares/error.middleware";
+import { errorMiddleware } from "./middlewares/error.middleware";
 import mongoose from "mongoose";
 import morgan from "morgan";
-import routes from "./src/routes";
+import routes from "./routes";
 // @ts-ignore
 import { getEndpoints } from "express-routes";
 import rateLimit, { MemoryStore } from "express-rate-limit";
@@ -65,3 +65,5 @@ app.listen(port, () => {
     }
   });
 });
+
+export default app;
