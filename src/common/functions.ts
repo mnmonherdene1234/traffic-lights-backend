@@ -4,29 +4,30 @@ import { getAllDto, getAllResultDto, getOneDto, ValidationDto } from "./dto";
 
 export async function getAll<T>(
   model: Model<any>,
-  findAllDto: getAllDto
+  getAllDto: getAllDto
 ): Promise<getAllResultDto<T>> {
-  if (findAllDto.page < 1) {
-    findAllDto.page = 1;
+  if (getAllDto.page < 1) {
+    getAllDto.page = 1;
   }
 
-  if (findAllDto.pageSize < 1) {
-    findAllDto.pageSize = 1;
+  if (getAllDto.page_size < 1) {
+    getAllDto.page_size = 1;
   }
 
-  const { filter, page, pageSize, populate, select, sort } = findAllDto;
+  const { filter, page, page_size, populate, select, sort } = getAllDto;
 
   const data = (await model
     .find(filter)
-    .skip((page - 1) * pageSize)
-    .limit(pageSize)
+    .skip((page - 1) * page_size)
+    .limit(page_size)
     .populate(populate)
     .select(select)
     .sort(sort)) as T[];
 
-  findAllDto.total = await model.countDocuments(filter);
+  getAllDto.total = await model.countDocuments(filter);
+  getAllDto.total_page = Math.ceil(getAllDto.total / page_size);
 
-  return { data, meta: findAllDto };
+  return { data, meta: getAllDto };
 }
 
 export async function getOne<T>(
@@ -85,11 +86,12 @@ export function requestToGetAllDto(req: Request): getAllDto {
   return {
     filter,
     page,
-    pageSize,
+    page_size: pageSize,
     populate,
     select,
     sort,
     total: 0,
+    total_page: 0,
   };
 }
 

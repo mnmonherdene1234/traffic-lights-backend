@@ -7,11 +7,12 @@ import Joi, {
 export class getAllDto {
   filter: any = {};
   page: number = 1;
-  pageSize: number = 20;
+  page_size: number = 20;
   total: number = 0;
-  populate: string = "";
-  sort: string = "";
-  select: string = "";
+  total_page: number = 0;
+  populate: any = {};
+  sort: any = {};
+  select: any = {};
 }
 
 export class getAllResultDto<T> {

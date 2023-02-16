@@ -13,19 +13,7 @@ async function login(req: Request, res: Response, next: NextFunction) {
 }
 
 async function profile(req: any, res: Response, next: NextFunction) {
-  try {
-    const { id } = req.user;
-    const user = await authService.profile(id);
-
-    if (!user) {
-      res.status(401).json({ error: "UNAUTHORIZED" });
-      return;
-    }
-
-    res.json(user);
-  } catch (error) {
-    next(error);
-  }
+  handleRequest(async () => await authService.profile(req.user?.id), res, next);
 }
 
 export default {
