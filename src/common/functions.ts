@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { Model } from "mongoose";
 import { ValidationDto } from "../dto/validation.dto";
 
-export class getAllDto {
+export class GetAllDto {
   filter: any = {};
   page: number = 1;
   page_size: number = 20;
@@ -13,12 +13,12 @@ export class getAllDto {
   select: any = {};
 }
 
-export class getAllResultDto<T> {
+export class GetAllResultDto<T> {
   data: T[] = [];
-  meta: getAllDto = new getAllDto();
+  meta: GetAllDto = new GetAllDto();
 }
 
-export class getOneDto {
+export class GetOneDto {
   id: string = "";
   populate: string = "";
   select: string = "";
@@ -26,8 +26,8 @@ export class getOneDto {
 
 export async function getAll<T>(
   model: Model<any>,
-  getAllDto: getAllDto
-): Promise<getAllResultDto<T>> {
+  getAllDto: GetAllDto
+): Promise<GetAllResultDto<T>> {
   if (getAllDto.page < 1) {
     getAllDto.page = 1;
   }
@@ -54,7 +54,7 @@ export async function getAll<T>(
 
 export async function getOne<T>(
   model: Model<any>,
-  findOneDto: getOneDto
+  findOneDto: GetOneDto
 ): Promise<T | null> {
   const { id, populate, select } = findOneDto;
   return (await model
@@ -63,7 +63,7 @@ export async function getOne<T>(
     .select(select)) as unknown as T;
 }
 
-export function requestToGetAllDto(req: Request): getAllDto {
+export function requestToGetAllDto(req: Request): GetAllDto {
   let filter: object = {};
   let page = 1;
   let pageSize = Infinity;
@@ -117,7 +117,7 @@ export function requestToGetAllDto(req: Request): getAllDto {
   };
 }
 
-export function requestToGetOneDto(req: Request): getOneDto {
+export function requestToGetOneDto(req: Request): GetOneDto {
   const id = req.params?.id;
   const populate: string = req.query?.populate?.toString() || "";
   const select: string = req.query?.select?.toString() || "";

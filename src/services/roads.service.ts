@@ -1,9 +1,9 @@
 import {
   getAll,
-  getAllDto,
-  getAllResultDto,
+  GetAllDto,
+  GetAllResultDto,
   getOne,
-  getOneDto,
+  GetOneDto,
 } from "../common/functions";
 import { Light } from "../models/light.model";
 import { IRoad, Road } from "../models/road.model";
@@ -12,11 +12,11 @@ async function create(road: IRoad): Promise<IRoad> {
   return (await new Road(road).save()) as unknown as IRoad;
 }
 
-async function findAll(findAllDto: getAllDto): Promise<getAllResultDto<IRoad>> {
+async function findAll(findAllDto: GetAllDto): Promise<GetAllResultDto<IRoad>> {
   return await getAll<IRoad>(Road, findAllDto);
 }
 
-async function findOne(findOneDto: getOneDto): Promise<IRoad | null> {
+async function findOne(findOneDto: GetOneDto): Promise<IRoad | null> {
   return await getOne<IRoad>(Road, findOneDto);
 }
 

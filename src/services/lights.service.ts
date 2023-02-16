@@ -1,9 +1,9 @@
 import {
   getAll,
-  getAllDto,
-  getAllResultDto,
+  GetAllDto,
+  GetAllResultDto,
   getOne,
-  getOneDto,
+  GetOneDto,
 } from "../common/functions";
 import { ROAD_NOT_FOUND } from "../errors";
 import { ILight, Light } from "../models/light.model";
@@ -21,11 +21,11 @@ async function create(light: ILight): Promise<ILight> {
   return createdLight;
 }
 
-async function findAll(getAllDto: getAllDto): Promise<getAllResultDto<ILight>> {
+async function findAll(getAllDto: GetAllDto): Promise<GetAllResultDto<ILight>> {
   return await getAll<ILight>(Light, getAllDto);
 }
 
-async function findOne(getOneDto: getOneDto): Promise<ILight | null> {
+async function findOne(getOneDto: GetOneDto): Promise<ILight | null> {
   return await getOne<ILight>(Light, getOneDto);
 }
 

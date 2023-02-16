@@ -2,10 +2,10 @@ import { IUser, User } from "../models/user.model";
 import bcrypt from "bcrypt";
 import {
   getAll,
-  getAllDto,
-  getAllResultDto,
+  GetAllDto,
+  GetAllResultDto,
   getOne,
-  getOneDto,
+  GetOneDto,
 } from "../common/functions";
 
 async function create(user: IUser): Promise<IUser> {
@@ -14,11 +14,11 @@ async function create(user: IUser): Promise<IUser> {
   return (await User.create(user)) as unknown as IUser;
 }
 
-async function findAll(getAllDto: getAllDto): Promise<getAllResultDto<IUser>> {
+async function findAll(getAllDto: GetAllDto): Promise<GetAllResultDto<IUser>> {
   return await getAll<IUser>(User, getAllDto);
 }
 
-async function findOne(getOneDto: getOneDto): Promise<IUser | null> {
+async function findOne(getOneDto: GetOneDto): Promise<IUser | null> {
   return await getOne<IUser>(User, getOneDto);
 }
 

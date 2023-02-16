@@ -1,9 +1,9 @@
 import {
   getAll,
-  getAllDto,
-  getAllResultDto,
+  GetAllDto,
+  GetAllResultDto,
   getOne,
-  getOneDto,
+  GetOneDto,
 } from "../common/functions";
 import { ILamp, Lamp } from "../models/lamp.model";
 
@@ -11,11 +11,11 @@ async function create(lamp: ILamp): Promise<ILamp> {
   return (await Lamp.create(lamp)) as ILamp;
 }
 
-async function findAll(getAllDto: getAllDto): Promise<getAllResultDto<ILamp>> {
+async function findAll(getAllDto: GetAllDto): Promise<GetAllResultDto<ILamp>> {
   return await getAll(Lamp, getAllDto);
 }
 
-async function findOne(getOneDto: getOneDto): Promise<ILamp | null> {
+async function findOne(getOneDto: GetOneDto): Promise<ILamp | null> {
   return await getOne<ILamp>(Lamp, getOneDto);
 }
 
