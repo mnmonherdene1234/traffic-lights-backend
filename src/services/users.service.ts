@@ -1,7 +1,12 @@
 import { IUser, User } from "../models/user.model";
 import bcrypt from "bcrypt";
-import { getAllDto, getAllResultDto, getOneDto } from "../common/dto";
-import { getAll, getOne } from "../common/functions";
+import {
+  getAll,
+  getAllDto,
+  getAllResultDto,
+  getOne,
+  getOneDto,
+} from "../common/functions";
 
 async function create(user: IUser): Promise<IUser> {
   const salt: string = await bcrypt.genSalt();

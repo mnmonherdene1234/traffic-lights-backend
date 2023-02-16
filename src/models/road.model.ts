@@ -6,6 +6,8 @@ import toJSON from "./utils/toJSON";
 export interface IRoad {
   id: string;
   name: string;
+  lat: number;
+  lng: number;
   lights: ILight[];
   created_at: Date;
   updated_at: Date;
@@ -20,6 +22,17 @@ const roadSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+
+    lat: {
+      type: Number,
+      require: true,
+    },
+
+    lng: {
+      type: Number,
+      require: true,
+    },
+
     lights: [
       {
         type: mongoose.Types.ObjectId,

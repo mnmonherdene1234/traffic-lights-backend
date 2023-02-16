@@ -1,20 +1,22 @@
-import { getAllDto, getOneDto } from "../common/dto";
-import { getAll, getOne } from "../common/functions";
+import {
+  getAll,
+  getAllDto,
+  getAllResultDto,
+  getOne,
+  getOneDto,
+} from "../common/functions";
 import { ILamp, Lamp } from "../models/lamp.model";
 
 async function create(lamp: ILamp): Promise<ILamp> {
   return (await Lamp.create(lamp)) as ILamp;
 }
 
-async function findAll(getAllDto: getAllDto): Promise<{
-  data: unknown[];
-  meta: getAllDto;
-}> {
+async function findAll(getAllDto: getAllDto): Promise<getAllResultDto<ILamp>> {
   return await getAll(Lamp, getAllDto);
 }
 
 async function findOne(getOneDto: getOneDto): Promise<ILamp | null> {
-  return await getOne(Lamp, getOneDto);
+  return await getOne<ILamp>(Lamp, getOneDto);
 }
 
 async function update(id: string, lamp: ILamp): Promise<ILamp | null> {

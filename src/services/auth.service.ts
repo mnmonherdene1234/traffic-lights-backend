@@ -1,7 +1,7 @@
 import { IUser, User } from "../models/user.model";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import { LoginDto } from "../common/dto";
+import { LoginDto } from "../dto/login.dto";
 import { UNAUTHORIZED } from "../errors";
 
 async function login(loginDto: LoginDto): Promise<string | null> {

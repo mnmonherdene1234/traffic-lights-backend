@@ -1,6 +1,28 @@
 import { NextFunction, Request, Response } from "express";
 import { Model } from "mongoose";
-import { getAllDto, getAllResultDto, getOneDto, ValidationDto } from "./dto";
+import { ValidationDto } from "../dto/validation.dto";
+
+export class getAllDto {
+  filter: any = {};
+  page: number = 1;
+  page_size: number = 20;
+  total: number = 0;
+  total_page: number = 0;
+  populate: any = {};
+  sort: any = {};
+  select: any = {};
+}
+
+export class getAllResultDto<T> {
+  data: T[] = [];
+  meta: getAllDto = new getAllDto();
+}
+
+export class getOneDto {
+  id: string = "";
+  populate: string = "";
+  select: string = "";
+}
 
 export async function getAll<T>(
   model: Model<any>,
