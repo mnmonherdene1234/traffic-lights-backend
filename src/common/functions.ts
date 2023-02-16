@@ -66,7 +66,7 @@ export async function getOne<T>(
 export function requestToGetAllDto(req: Request): getAllDto {
   let filter: object = {};
   let page = 1;
-  let pageSize = 20;
+  let pageSize = Infinity;
   let populate = "";
   let select = "";
   let sort = "";
@@ -89,7 +89,7 @@ export function requestToGetAllDto(req: Request): getAllDto {
   if (req.query.pageSize) {
     const parsedPageSize = parseInt(req.query.pageSize.toString());
     if (!isNaN(parsedPageSize)) {
-      pageSize = parsedPageSize > 0 ? parsedPageSize : 20;
+      pageSize = parsedPageSize > 0 ? parsedPageSize : Infinity;
     }
   }
 
