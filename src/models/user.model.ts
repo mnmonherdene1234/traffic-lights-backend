@@ -1,15 +1,6 @@
 import mongoose from "mongoose";
 import timestamps from "./utils/timestamps";
 
-export interface IUser {
-  id: string;
-  username: string;
-  password: string;
-  name: string;
-  created_at: Date;
-  updated_at: Date;
-}
-
 export const USERS_NAME: string = "users";
 
 const userSchema = new mongoose.Schema(
@@ -21,14 +12,24 @@ const userSchema = new mongoose.Schema(
       lowercase: true,
       unique: true,
     },
+
     password: {
       type: String,
       required: true,
     },
+
     name: {
       type: String,
       required: true,
       trim: true,
+    },
+
+    phone: {
+      type: String,
+    },
+
+    email: {
+      type: String,
     },
   },
   {
