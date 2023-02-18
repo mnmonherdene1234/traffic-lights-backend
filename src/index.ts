@@ -10,6 +10,7 @@ import { getEndpoints } from "express-routes";
 import rateLimit, { MemoryStore } from "express-rate-limit";
 import helmet from "helmet";
 import cors from "cors";
+import compression from "compression";
 
 dotenv.config();
 
@@ -44,6 +45,8 @@ app.use(
 app.use(morgan("dev"));
 app.use(helmet());
 app.use(apiLimiter);
+app.use(compression());
+
 app.use("/v1/api", routes);
 app.use(errorMiddleware);
 
