@@ -28,6 +28,10 @@ export async function getAll<T>(
   model: Model<any>,
   getAllDto: GetAllDto
 ): Promise<GetAllResultDto<T>> {
+  getAllDto.page = parseInt(getAllDto.page as unknown as string) || 1;
+  getAllDto.page_size =
+    parseInt(getAllDto.page_size as unknown as string) || 20;
+
   if (getAllDto.page < 1) {
     getAllDto.page = 1;
   }
