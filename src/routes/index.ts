@@ -3,7 +3,6 @@ import usersRoute from "./users.route";
 import authRoute from "./auth.route";
 import lightsRoute from "./lights.route";
 import roadsRoute from "./roads.route";
-import lampsRoute from "./lamps.route";
 import { jwtMiddleware } from "../middlewares/jwt.middleware";
 
 const router = express.Router();
@@ -12,7 +11,6 @@ router.use("/auth", authRoute);
 router.use("/users", jwtMiddleware, usersRoute);
 router.use("/lights", jwtMiddleware, lightsRoute);
 router.use("/roads", jwtMiddleware, roadsRoute);
-router.use("/lamps", jwtMiddleware, lampsRoute);
 
 router.all("*", (_req: Request, res: Response) => {
   res.status(404).json({

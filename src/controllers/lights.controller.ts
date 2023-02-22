@@ -1,45 +1,51 @@
 import { NextFunction, Request, Response } from "express";
-import { requestToGetAllDto, requestToGetOneDto } from "../common/functions";
+import {
+  handleRequest,
+  requestToGetAllDto,
+  requestToGetOneDto,
+} from "../common/functions";
+import { LightDto } from "../dto/light.dto";
 import lightsService from "../services/lights.service";
 
 async function create(req: Request, res: Response, next: NextFunction) {
-  try {
-    res.json(await lightsService.create(req.body));
-  } catch (error) {
-    next(error);
-  }
+  handleRequest(
+    async () => await lightsService.create(req.body),
+    res,
+    next,
+    new LightDto(req.body)
+  );
 }
 
 async function findAll(req: Request, res: Response, next: NextFunction) {
-  try {
-    res.json(await lightsService.findAll(await requestToGetAllDto(req)));
-  } catch (error) {
-    next(error);
-  }
+  handleRequest(
+    async () => await lightsService.findAll(requestToGetAllDto(req)),
+    res,
+    next
+  );
 }
 
 async function findOne(req: Request, res: Response, next: NextFunction) {
-  try {
-    res.json(await lightsService.findOne(await requestToGetOneDto(req)));
-  } catch (error) {
-    next(error);
-  }
+  handleRequest(
+    async () => await lightsService.findOne(requestToGetOneDto(req)),
+    res,
+    next
+  );
 }
 
 async function update(req: Request, res: Response, next: NextFunction) {
-  try {
-    res.json(await lightsService.update(req.params?.id, req.body));
-  } catch (error) {
-    next(error);
-  }
+  handleRequest(
+    async () => await lightsService.update(req.params.id, req.body),
+    res,
+    next
+  );
 }
 
 async function remove(req: Request, res: Response, next: NextFunction) {
-  try {
-    res.json(await lightsService.remove(req.params?.id));
-  } catch (error) {
-    next(error);
-  }
+  handleRequest(
+    async () => await lightsService.remove(req.params.id),
+    res,
+    next
+  );
 }
 
 export default {
