@@ -5,6 +5,7 @@ export abstract class ValidationDto {
   public validationOptions: BaseValidationOptions = {
     abortEarly: false,
     allowUnknown: true,
+    convert: true,
   };
 
   constructor(object: any) {

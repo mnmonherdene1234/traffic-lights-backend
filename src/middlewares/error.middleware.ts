@@ -10,6 +10,9 @@ export const errorMiddleware = (
 
   const errStatus = err.statusCode || 500;
   const errMsg = err.message || "Something went wrong";
+
+  console.error(err);
+
   res.status(errStatus).json({
     success: false,
     status: errStatus,
