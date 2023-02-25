@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import { LIGHTS_NAME } from "./light.model";
 import timestamps from "./utils/timestamps";
 import toJSON from "./utils/toJSON";
 
@@ -22,13 +21,6 @@ const roadSchema = new mongoose.Schema(
       type: Number,
       require: true,
     },
-
-    lights: [
-      {
-        type: mongoose.Types.ObjectId,
-        ref: LIGHTS_NAME,
-      },
-    ],
   },
   {
     toJSON,

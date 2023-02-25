@@ -20,7 +20,7 @@ const lightSchema = new mongoose.Schema(
     },
 
     road: {
-      type: mongoose.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: ROADS_NAME,
       required: true,
     },

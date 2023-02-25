@@ -19,8 +19,8 @@ export class GetAllResultDto<T> {
 
 export class GetOneDto {
   id: string = "";
-  populate: string = "";
-  select: string = "";
+  populate?: any;
+  select?: any;
 }
 
 export async function getAll<T>(
@@ -121,9 +121,9 @@ export function requestToGetAllDto(req: Request): GetAllDto {
 }
 
 export function requestToGetOneDto(req: Request): GetOneDto {
-  const id = req.params?.id;
-  const populate: string = req.query?.populate?.toString() || "";
-  const select: string = req.query?.select?.toString() || "";
+  const id: string = req.params?.id;
+  const populate: string | undefined = req.query?.populate?.toString();
+  const select: string | undefined = req.query?.select?.toString();
 
   return { id, populate, select };
 }
