@@ -69,7 +69,7 @@ export async function getOne<T>(
 export function requestToGetAllDto(req: Request): GetAllDto {
   let filter: any = {};
   let page = 1;
-  let pageSize = Infinity;
+  let page_size = Infinity;
   let populate = "";
   let select = "";
   let sort = "";
@@ -85,10 +85,10 @@ export function requestToGetAllDto(req: Request): GetAllDto {
     }
   }
 
-  if (req.query.pageSize) {
-    const parsedPageSize = parseInt(req.query.pageSize.toString());
+  if (req.query.page_size) {
+    const parsedPageSize = parseInt(req.query.page_size.toString());
     if (!isNaN(parsedPageSize)) {
-      pageSize = parsedPageSize > 0 ? parsedPageSize : Infinity;
+      page_size = parsedPageSize > 0 ? parsedPageSize : Infinity;
     }
   }
 
@@ -107,7 +107,7 @@ export function requestToGetAllDto(req: Request): GetAllDto {
   return {
     filter,
     page,
-    page_size: pageSize,
+    page_size,
     populate,
     select,
     sort,
