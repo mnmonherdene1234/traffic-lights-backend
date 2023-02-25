@@ -1,17 +1,7 @@
 import mongoose from "mongoose";
-import { ILight, LIGHTS_NAME } from "./light.model";
+import { LIGHTS_NAME } from "./light.model";
 import timestamps from "./utils/timestamps";
 import toJSON from "./utils/toJSON";
-
-export interface IRoad {
-  id: string;
-  name: string;
-  lat: number;
-  lng: number;
-  lights: ILight[];
-  created_at: Date;
-  updated_at: Date;
-}
 
 export const ROADS_NAME: string = "roads";
 

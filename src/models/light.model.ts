@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { IRoad, ROADS_NAME } from "./road.model";
+import { ROADS_NAME } from "./road.model";
 import timestamps from "./utils/timestamps";
 import toJSON from "./utils/toJSON";
 

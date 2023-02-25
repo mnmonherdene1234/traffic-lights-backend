@@ -5,31 +5,34 @@ import {
   getOne,
   GetOneDto,
 } from "../common/functions";
+import { RoadDto } from "../dto/road.dto";
 import { Light } from "../models/light.model";
-import { IRoad, Road } from "../models/road.model";
+import { Road } from "../models/road.model";
 
-async function create(road: IRoad): Promise<IRoad> {
-  return (await new Road(road).save()) as unknown as IRoad;
+async function create(road: RoadDto): Promise<RoadDto> {
+  return (await new Road(road).save()) as unknown as RoadDto;
 }
 
-async function findAll(findAllDto: GetAllDto): Promise<GetAllResultDto<IRoad>> {
-  return await getAll<IRoad>(Road, findAllDto);
+async function findAll(
+  findAllDto: GetAllDto
+): Promise<GetAllResultDto<RoadDto>> {
+  return await getAll<RoadDto>(Road, findAllDto);
 }
 
-async function findOne(findOneDto: GetOneDto): Promise<IRoad | null> {
-  return await getOne<IRoad>(Road, findOneDto);
+async function findOne(findOneDto: GetOneDto): Promise<RoadDto | null> {
+  return await getOne<RoadDto>(Road, findOneDto);
 }
 
-async function update(id: string, road: IRoad): Promise<IRoad | null> {
+async function update(id: string, road: RoadDto): Promise<RoadDto | null> {
   return (await Road.findByIdAndUpdate(
     id,
     { $set: { ...road } },
     { new: true }
-  )) as IRoad;
+  )) as RoadDto;
 }
 
-async function remove(id: string): Promise<IRoad | null> {
-  const deletedRoad = (await Road.findByIdAndDelete(id)) as IRoad;
+async function remove(id: string): Promise<RoadDto | null> {
+  const deletedRoad = (await Road.findByIdAndDelete(id)) as RoadDto;
 
   if (deletedRoad) {
     await Light.deleteMany({ road: deletedRoad.id });
