@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from "express";
 import { Model } from "mongoose";
-import { ValidationDto } from "../dto/validation.dto";
 
 export class GetAllDto {
   filter: any = {};
@@ -132,20 +131,9 @@ export function requestToGetOneDto(req: Request): GetOneDto {
 export async function handleRequest<T>(
   fn: () => Promise<T>,
   res: Response,
-  next: NextFunction,
-  validationDto?: ValidationDto
+  next: NextFunction
 ): Promise<void> {
   try {
-    if (validationDto) {
-      try {
-        await validationDto.validateAsync();
-      } catch (error: any) {
-        error.statusCode = 400;
-        next(error);
-        return;
-      }
-    }
-
     const result = await fn();
     res.json(result);
   } catch (error) {

@@ -1,17 +1,7 @@
-import Joi, { ObjectSchema } from "joi";
 import { LightType } from "../models/light.model";
 import { RoadDto } from "./road.dto";
-import { ValidationDto } from "./validation.dto";
 
-export class LightDto extends ValidationDto {
-  protected schema: ObjectSchema<any> = Joi.object({
-    name: Joi.string().optional(),
-    road: Joi.string().optional(),
-    type: Joi.valid(...Object.values(LightType)),
-    x: Joi.number().min(0).required(),
-    y: Joi.number().min(0).required(),
-  });
-
+export class LightDto {
   id: string = "";
   name: string = "";
   road: string | RoadDto = "";

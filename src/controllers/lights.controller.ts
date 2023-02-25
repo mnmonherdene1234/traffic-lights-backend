@@ -4,16 +4,10 @@ import {
   requestToGetAllDto,
   requestToGetOneDto,
 } from "../common/functions";
-import { LightDto } from "../dto/light.dto";
 import lightsService from "../services/lights.service";
 
 async function create(req: Request, res: Response, next: NextFunction) {
-  handleRequest(
-    async () => await lightsService.create(req.body),
-    res,
-    next,
-    new LightDto(req.body)
-  );
+  handleRequest(async () => await lightsService.create(req.body), res, next);
 }
 
 async function findAll(req: Request, res: Response, next: NextFunction) {

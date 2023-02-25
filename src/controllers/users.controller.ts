@@ -1,45 +1,45 @@
 import { NextFunction, Request, Response } from "express";
-import { requestToGetAllDto, requestToGetOneDto } from "../common/functions";
+import {
+  handleRequest,
+  requestToGetAllDto,
+  requestToGetOneDto,
+} from "../common/functions";
 import usersService from "../services/users.service";
 
 async function create(req: Request, res: Response, next: NextFunction) {
-  try {
-    res.json(await usersService.create(req.body));
-  } catch (error) {
-    next(error);
-  }
+  handleRequest(async () => await usersService.create(req.body), res, next);
 }
 
 async function findAll(req: Request, res: Response, next: NextFunction) {
-  try {
-    res.json(await usersService.findAll(await requestToGetAllDto(req)));
-  } catch (error) {
-    next(error);
-  }
+  handleRequest(
+    async () => await usersService.findAll(requestToGetAllDto(req)),
+    res,
+    next
+  );
 }
 
 async function findOne(req: Request, res: Response, next: NextFunction) {
-  try {
-    res.json(await usersService.findOne(await requestToGetOneDto(req)));
-  } catch (error) {
-    next(error);
-  }
+  handleRequest(
+    async () => await usersService.findOne(requestToGetOneDto(req)),
+    res,
+    next
+  );
 }
 
 async function update(req: Request, res: Response, next: NextFunction) {
-  try {
-    res.json(await usersService.update(req.params.id, req.body));
-  } catch (error) {
-    next(error);
-  }
+  handleRequest(
+    async () => await usersService.update(req.params.id, req.body),
+    res,
+    next
+  );
 }
 
 async function remove(req: Request, res: Response, next: NextFunction) {
-  try {
-    res.json(await usersService.remove(req.params.id));
-  } catch (error) {
-    next(error);
-  }
+  handleRequest(
+    async () => await usersService.remove(req.params.id),
+    res,
+    next
+  );
 }
 
 export default {
