@@ -67,7 +67,7 @@ export async function getOne<T>(
 }
 
 export function requestToGetAllDto(req: Request): GetAllDto {
-  let filter: object = {};
+  let filter: any = {};
   let page = 1;
   let pageSize = Infinity;
   let populate = "";
@@ -75,11 +75,7 @@ export function requestToGetAllDto(req: Request): GetAllDto {
   let sort = "";
 
   if (req.query.filter) {
-    try {
-      filter = JSON.parse(req.query.filter.toString());
-    } catch (error) {
-      console.error(error);
-    }
+    filter = JSON.parse(JSON.stringify(req.query.filter));
   }
 
   if (req.query.page) {
