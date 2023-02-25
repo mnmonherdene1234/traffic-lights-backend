@@ -33,11 +33,13 @@ const lightSchema = new mongoose.Schema(
 
     x: {
       type: Number,
+      default: 0,
       required: true,
     },
 
     y: {
       type: Number,
+      default: 0,
       required: true,
     },
   },
