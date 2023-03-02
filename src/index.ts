@@ -14,15 +14,10 @@ import compression from "compression";
 
 dotenv.config();
 
-console.time("start");
 const app: Express = express();
 const port = process.env.PORT || 8080;
 
-console.time("database");
-mongoose.connect(process.env.MONGODB as string, {}, () => {
-  console.log(`\x1b[32mconnected to database`);
-  console.timeEnd("database");
-});
+mongoose.connect(process.env.MONGODB as string, {});
 
 const apiLimiter = rateLimit({
   windowMs: 60 * 1000, // 1 minutes
@@ -54,7 +49,6 @@ app.listen(port, () => {
   console.log(
     `\x1b[35m⚡️[server]: Server is running at http://localhost:${port}`
   );
-  console.timeEnd("start");
 
   getEndpoints(app).forEach((route: { path: string; methods: string[] }) => {
     if (route.path != "*") {
