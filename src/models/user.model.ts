@@ -3,6 +3,11 @@ import timestamps from "./utils/timestamps";
 
 export const USERS_NAME: string = "users";
 
+export enum UserRole {
+  Admin = "ADMIN",
+  User = "USER",
+}
+
 const userSchema = new mongoose.Schema(
   {
     username: {
@@ -16,6 +21,12 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
       required: true,
+    },
+
+    role: {
+      type: String,
+      enem: UserRole,
+      default: UserRole.User,
     },
 
     name: {
