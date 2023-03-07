@@ -46,10 +46,6 @@ app.use("/v1/api", routes);
 app.use(errorMiddleware);
 
 app.listen(port, () => {
-  console.log(
-    `\x1b[35m⚡️[server]: Server is running at http://localhost:${port}`
-  );
-
   getEndpoints(app).forEach((route: { path: string; methods: string[] }) => {
     if (route.path != "*") {
       route.methods.forEach((method) =>
@@ -61,6 +57,10 @@ app.listen(port, () => {
       );
     }
   });
+
+  console.log(
+    `\x1b[35m⚡️[server]: Server is running at http://localhost:${port}`
+  );
 });
 
 export default app;
