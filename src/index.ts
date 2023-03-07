@@ -41,7 +41,6 @@ app.use(morgan("dev"));
 app.use(helmet());
 app.use(apiLimiter);
 app.use(compression());
-
 app.use("/v1/api", routes);
 app.use(errorMiddleware);
 
